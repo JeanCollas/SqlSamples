@@ -1,0 +1,35 @@
+-- =============================================
+-- Author:		Jean Collas
+-- Create date: 2020-09
+-- Description:	Searches a text in all objects (stored procedures, functions, etc)
+-- =============================================
+CREATE PROCEDURE [dbo].[Tools_SearchTextInObjects] 
+	@Text nvarchar(max)
+AS
+BEGIN
+
+	--SELECT ROUTINE_NAME, ROUTINE_DEFINITION
+	--	FROM INFORMATION_SCHEMA.ROUTINES 
+	--	WHERE --ROUTINE_DEFINITION LIKE '%@Id_Section%' 
+	--	--AND 
+	--	ROUTINE_DEFINITION LIKE '%'+@Text+'%' 
+	--	--AND ROUTINE_TYPE='PROCEDURE'
+
+
+
+--	SELECT  *-- [number], [TEXT]
+--	FROM sys.syscomments
+----	WHERE [id] = OBJECT_ID( 'dbo.p1')
+--	ORDER BY [number]
+ 
+--	SELECT *
+--	FROM sys.syscomments
+--	WHERE [text] LIKE '%'+@Text+'%' 
+ 
+	SELECT sa.name, sm.definition
+	FROM sys.sql_modules sm
+	LEFT JOIN sys.all_objects sa ON sm.object_id = sa.object_id
+	WHERE [definition] LIKE '%'+@Text+'%' 
+	ORDER BY name 
+
+END

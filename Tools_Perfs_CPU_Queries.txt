@@ -1,0 +1,32 @@
+-- =============================================
+-- Author:		Jean COLLAS
+-- Create date: 2020-09
+-- Description:	Gives the CPU usage of the most costly queries
+-- =============================================
+CREATE PROCEDURE [dbo].[Tools_Perfs_CPU_Queries]
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	WITH topQueries AS (
+		SELECT TOP 50
+			qs.plan_handle,
+			qs.total_worker_time
+		FROM
+			sys.dm_exec_query_stats qs
+		ORDER BY qs.total_worker_time DESC
+	)
+	SELECT
+		topQueries.plan_handle,
+		topQueries.total_worker_time,
+		q.dbid,
+		q.objectid,
+		q.number,
+		q.encrypted,
+		q.[text]
+	FROM topQueries
+		CROSS APPLY sys.dm_exec_sql_text(plan_handle) AS q
+		ORDER BY topQueries.total_worker_time DESC
+END

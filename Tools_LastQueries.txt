@@ -1,0 +1,24 @@
+-- =============================================
+-- Author:		Jean COLLAS
+-- Create date: 2020-09
+-- Description:	Gives the last queries executed and some stats
+-- =============================================
+CREATE PROCEDURE [dbo].[Tools_LastQueries]
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	SELECT 
+		CONVERT(char(16),execquery.last_execution_time,126) AS [Date Time], 
+		execquery.execution_count, 
+		execquery.last_elapsed_time, 
+		execquery.max_elapsed_time,
+		execsql.text AS [Script] 
+	FROM sys.dm_exec_query_stats AS execquery
+	CROSS APPLY sys.dm_exec_sql_text(execquery.sql_handle) AS execsql
+		WHERE execution_count > 1 --and execsql.text like '%next%'
+		ORDER BY CONVERT(char(10),execquery.last_execution_time,126), execution_count DESC, max_elapsed_time DESC 
+
+END

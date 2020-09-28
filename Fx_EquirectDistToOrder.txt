@@ -1,0 +1,25 @@
+-- =============================================
+-- Author:		Jean Collas
+-- Create date: 2020-09
+-- Description:	Returns a quick calculation of the squared equirectangular distance between two points to order by distance
+-- =============================================
+CREATE FUNCTION [dbo].[EquirectDistToOrder]
+(
+	@lat1 decimal(9,6)
+	,@lng1 decimal(9,6)
+	,@lat2 decimal(9,6)
+	,@lng2 decimal(9,6)
+)
+RETURNS float
+AS
+BEGIN
+	DECLARE @lat1Rad float,@lat2Rad float, @lng1Rad float, @lng2Rad float
+	SELECT 
+		@lat1Rad = @lat1*PI()/180, 
+		@lat2Rad = @lat2*PI()/180,
+		@lng1Rad = @lng1*PI()/180,
+		@lng2Rad = @lng2*PI()/180
+	RETURN POWER((@lng2Rad - @lng1Rad) * COS((@lat1Rad + @lat2Rad) / 2),2)
+				+ POWER((@lat2Rad - @lat1Rad),2) 
+END
+

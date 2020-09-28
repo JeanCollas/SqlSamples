@@ -1,0 +1,48 @@
+-- =============================================
+-- Author:		Jean Collas
+-- Create date: 21/10/2013
+-- Description:	Provides info about database storage usage
+-- =============================================
+ALTER PROCEDURE [dbo].[Tech_StorageUsage] 
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	create table #spaceused (
+	  name nvarchar(120),
+	  rows char(11),
+	  reserved varchar(18),
+	  data varchar(18),
+	  index_size varchar(18),
+	  unused varchar(18)
+	)
+
+	DECLARE Tables CURSOR FOR
+	  SELECT name
+	  FROM sysobjects WHERE type='U'
+	  ORDER BY name ASC
+
+	OPEN Tables
+	DECLARE @table varchar(128)
+
+	FETCH NEXT FROM Tables INTO @table
+
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+	  INSERT INTO #spaceused EXEC sp_spaceused @table
+	  FETCH NEXT FROM Tables INTO @table
+	END
+
+	CLOSE Tables
+	DEALLOCATE Tables 
+
+	SELECT * FROM #spaceused
+	ORDER BY CONVERT(bigint, SUBSTRING( data, 0,LEN(data)-3 ) )+CONVERT(bigint, SUBSTRING( index_size, 0,LEN(index_size)-3 ) ) desc
+
+	DROP TABLE #spaceused
+
+	EXEC sp_spaceused
+
+END

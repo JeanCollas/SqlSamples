@@ -1,0 +1,13 @@
+-- =============================================
+-- Author:		Jean COLLAS
+-- Create date: 2020-09
+-- Description:	Returns the year-month part of a date
+-- =============================================
+
+CREATE FUNCTION [dbo].[Month_Of](@date datetime)  
+	RETURNS datetime
+AS
+BEGIN
+
+	RETURN DATEFROMPARTS(DATEPART(year,@date),DATEPART(month,@date),1)
+END

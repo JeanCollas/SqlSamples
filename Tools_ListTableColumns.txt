@@ -1,0 +1,29 @@
+-- =============================================
+-- Author:		Jean Collas
+-- Create date: 02/10/2013
+-- Description:	Lists objects information
+-- =============================================
+CREATE  PROCEDURE [dbo].[Tools_ListTableColumns]
+	@TableName nvarchar(max)
+AS
+BEGIN
+
+	EXEC sp_help @TableName
+
+
+--SELECT 
+--   ORDINAL_POSITION
+--  ,COLUMN_NAME
+--  ,DATA_TYPE
+--  ,CHARACTER_MAXIMUM_LENGTH
+--  ,IS_NULLABLE
+--  ,COLUMN_DEFAULT
+--FROM   
+--  INFORMATION_SCHEMA.COLUMNS 
+--WHERE   
+--  TABLE_NAME = 'Sections' 
+--ORDER BY 
+--  ORDINAL_POSITION ASC; 
+
+END
+

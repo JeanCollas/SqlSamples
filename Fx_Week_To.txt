@@ -1,0 +1,12 @@
+-- =============================================
+-- Author:		Jean COLLAS
+-- Create date: 2020-09
+-- Description:	Returns the number of weeks before today of a date
+-- =============================================
+
+CREATE FUNCTION [dbo].[Weeks_To](@date datetime)  
+	RETURNS datetime
+AS
+BEGIN
+	RETURN (CONVERT([int],-floor(((1.0)*(datediff(day,[dbo].[ToDay](),@date)))/(7))))
+END

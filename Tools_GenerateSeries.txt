@@ -1,0 +1,45 @@
+-- =============================================
+-- Author:		Jean COLLAS
+-- Create date: 2020-09
+-- Description:	Generates a serie of number
+-- =============================================
+CREATE PROCEDURE [dbo].[Tools_GenerateSeries]
+	@Min int
+	,@Max int
+	,@Asc bit=1
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	-- EXEC Tools_GenerateSeries 1,20,1
+	-- EXEC Tools_GenerateSeries 1,20,0
+
+	IF @Asc = 1
+	BEGIN
+		WITH tree (level)                        
+		AS (
+			SELECT @Min     
+			UNION ALL                               
+			SELECT t.level + 1
+				FROM   tree t 
+				WHERE t.Level <@Max
+			)
+		SELECT *
+		FROM   tree
+	END
+	ELSE
+	BEGIN
+		WITH tree (level)                        
+		AS (SELECT @Max     
+			UNION ALL                               
+			SELECT t.level - 1
+			FROM   tree t 
+			WHERE t.Level >@Min
+			)
+		SELECT *
+		FROM   tree
+	END
+
+END

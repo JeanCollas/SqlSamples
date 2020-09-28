@@ -1,0 +1,22 @@
+-- =============================================
+-- Author:		Jean COLLAS
+-- Create date: 2020-09
+-- Description:	Extracts the base URL from an URL
+-- =============================================
+
+CREATE FUNCTION [dbo].[ExtractBaseURL]
+(
+   @URLString  VARCHAR(MAX)        -- the URL string to parse
+)
+RETURNS VARCHAR(MAX) AS 
+BEGIN
+	RETURN CASE 
+		WHEN CHARINDEX('//',@URLString,1)=-1 THEN ''
+		WHEN LEN(REPLACE(@URLString,'/',''))>LEN(@URLString)-3 THEN 
+			SUBSTRING(@URLString,(CHARINDEX('//',@URLString,1) + 2)
+				, LEN(@UrlString)-CHARINDEX('//',@URLString,1) )
+		WHEN CHARINDEX('//',@URLString,1)>0 THEN
+			SUBSTRING(@URLString,(CHARINDEX('//',@URLString,1) + 2),CHARINDEX('/', (@URLString), CHARINDEX('//',@URLString,1)+CHARINDEX('//',@URLString,1))-CHARINDEX('//',@URLString,1)-2)
+		END
+END
+

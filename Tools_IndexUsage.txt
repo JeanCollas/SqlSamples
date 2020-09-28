@@ -1,0 +1,24 @@
+-- =============================================
+-- Author:		Jean COLLAS
+-- Create date: 2020-09
+-- Description:	Gives the usage of all indexes in the DB
+-- =============================================
+CREATE PROCEDURE [dbo].[Tools_IndexUsage]
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	SELECT   OBJECT_NAME(S.[OBJECT_ID]) AS [OBJECT NAME], 
+			 I.[NAME] AS [INDEX NAME], 
+			 USER_SEEKS, 
+			 USER_SCANS, 
+			 USER_LOOKUPS, 
+			 USER_UPDATES , *
+	FROM     SYS.DM_DB_INDEX_USAGE_STATS AS S 
+			 INNER JOIN SYS.INDEXES AS I 
+			   ON I.[OBJECT_ID] = S.[OBJECT_ID] 
+				  AND I.INDEX_ID = S.INDEX_ID 
+END
+GO

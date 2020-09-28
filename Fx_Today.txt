@@ -1,0 +1,12 @@
+-- =============================================
+-- Author:		Jean COLLAS
+-- Create date: 2020-09
+-- Description:	Returns the today date
+-- =============================================
+
+CREATE FUNCTION [dbo].[TODAY]()  
+RETURNS datetime
+AS
+BEGIN
+	return DATEFROMPARTS(DATEPART(year,getdate()),DATEPART(month,getdate()),DATEPART(day,getdate()))
+END

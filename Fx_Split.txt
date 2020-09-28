@@ -1,0 +1,29 @@
+-- =============================================
+-- Author:		Jean Collas
+-- Create date: 2020-09
+-- Description:	Split a text
+-- =============================================
+CREATE FUNCTION [dbo].[Split] 
+(	
+	@str varchar(1000), 
+	@delimiter varchar(10)=','
+)
+RETURNS TABLE 
+AS
+RETURN 
+(
+	WITH cte AS
+	(
+		SELECT 0 a, 1 b
+		UNION ALL
+		SELECT b, CHARINDEX(@delimiter, @str, b) + LEN(@delimiter)
+		FROM CTE
+		WHERE b > a
+	)
+	SELECT SUBSTRING(@str, a,
+				CASE WHEN b > LEN(@delimiter) 
+					THEN b - a - LEN(@delimiter) 
+					ELSE LEN(@str) - a + 1 END) value      
+		FROM cte WHERE a > 0
+)
+
