@@ -1,0 +1,18 @@
+-- =============================================
+-- Author:		Jean COLLAS
+-- Create date: 2020-09
+-- Description:	Useful when getting a 'transaction log full' error
+-- =============================================
+CREATE PROCEDURE [dbo].[Tech_SolveTransactionLogFull]
+AS
+BEGIN
+
+	ALTER DATABASE MyDatabase
+		SET RECOVERY SIMPLE
+
+	DBCC SHRINKFILE(N'MyDatabase_log', 4096); 
+
+	ALTER DATABASE MyDatabase
+	    SET RECOVERY FULL
+	
+END

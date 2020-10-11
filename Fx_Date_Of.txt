@@ -4,9 +4,12 @@
 -- Description:	Returns the year-month-day part of a date
 -- =============================================
 
-CREATE FUNCTION [dbo].[Month_Of](@date datetime)  
+CREATE FUNCTION [dbo].[Date_Of](@date datetime)  
 	RETURNS datetime
 AS
 BEGIN
-	RETURN DATEFROMPARTS(DATEPART(year,@date),DATEPART(month,@date),DATEPART(day,@date))
+	RETURN CONVERT(DATE, @datetime)
+	-- RETURN DATEADD(dd, DATEDIFF(dd, 0, @datetime), 0)
+	-- CAST(GETDATE() AS DATE)
+	-- RETURN DATEFROMPARTS(DATEPART(year,@date),DATEPART(month,@date),DATEPART(day,@date))
 END

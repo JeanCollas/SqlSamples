@@ -1,0 +1,11 @@
+-- =============================================
+-- Author:		Jean COLLAS
+-- Create date: 2020-09
+-- Description:	Returns 'yyyy-MM-dd' date string format
+-- =============================================
+CREATE FUNCTION [dbo].[DateToStr](@Date datetime)
+	RETURNS char(10)
+AS
+BEGIN
+	RETURN CONVERT(char(10),@Date,126)
+END

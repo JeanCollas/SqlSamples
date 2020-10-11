@@ -1,0 +1,26 @@
+-- =============================================
+-- Author:		Jean Collas
+-- Create date: 02/10/2013
+-- Description:	Disp an error on the output (faster than PRINT)
+-- =============================================
+CREATE PROCEDURE [dbo].[Tools_DispError]
+	@Text nvarchar(MAX)
+AS
+BEGIN
+	RAISERROR  (@Text, 0, 1) with NOWAIT
+END
+
+-- =============================================
+-- Author:		Jean Collas
+-- Create date: 02/10/2013
+-- Description:	Disp an error on the output with a prefix
+-- =============================================
+CREATE PROCEDURE [dbo].[Tech_DispFunctionError]
+	@FunctionName nvarchar(MAX),
+	@Text nvarchar(MAX)
+AS
+BEGIN
+	DECLARE @Txt as nvarchar(MAX)
+	SELECT @Txt = @FunctionName + ': ' + @Text
+	RAISERROR  (@Text ,0,1) with NOWAIT
+END

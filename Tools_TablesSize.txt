@@ -16,6 +16,7 @@ BEGIN
 		'All' AS TableName,
 		'All' AS SchemaName,
 		sum(p.rows) AS [RowCount],
+		1024 * SUM(a.used_pages) * 8 / p.rows as SpacePerRow,
 		SUM(a.total_pages) * 8 AS TotalSpaceKB, 
 		SUM(a.used_pages) * 8 AS UsedSpaceKB, 
 		(SUM(a.total_pages) - SUM(a.used_pages)) * 8 AS UnusedSpaceKB

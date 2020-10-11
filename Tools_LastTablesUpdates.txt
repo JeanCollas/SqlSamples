@@ -1,0 +1,20 @@
+-- =============================================
+-- Author:		Jean COLLAS
+-- Create date: 21/10/2013
+-- Description:	Provides info about database storage usage
+-- =============================================
+CREATE PROCEDURE [dbo].[Tools_LastTablesUpdates] 
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	SELECT OBJECT_NAME(OBJECT_ID) AS Name, MAX(last_user_update) AS last_user_update
+		FROM sys.dm_db_index_usage_stats
+		WHERE database_id = DB_ID( 'MapDanceDB')
+		GROUP BY OBJECT_NAME(OBJECT_ID)
+		ORDER BY last_user_update DESC
+
+END
+
